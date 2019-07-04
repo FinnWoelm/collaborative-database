@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
 
 const Cell = styled.div`
@@ -17,6 +17,11 @@ const Row = styled.div`
   display: table-row;
 `
 
+const Table = styled.div`
+  display: table;
+  margin: auto;
+`
+
 const TableHead = styled(Row)`
   background: black;
   color: white;
@@ -32,51 +37,50 @@ const TableHead = styled(Row)`
   }
 `
 
-const data = [{
-  id: 'pumkin',
-  attributes: 'john',
-  timestamp: 'now'
-},{
-  id: 'pumkin',
-  attributes: 'john',
-  timestamp: 'now'
-},{
-  id: 'pumkin',
-  attributes: 'john',
-  timestamp: 'now'
-},{
-  id: 'pumkin',
-  attributes: 'john',
-  timestamp: 'now'
-}]
+class TableView extends Component {
+  constructor() {
+    super();
+    this.state = { records: [] };
+  }
 
-const TableView = () => (
-  <div style={{display: 'table', margin: 'auto'}}>
-    <TableHead>
-      <Cell>
-        ID
-      </Cell>
-      <Cell>
-        Attributes
-      </Cell>
-      <Cell>
-        Timestamp
-      </Cell>
-    </TableHead>
-    {data.map(record => (
-      <Row>
-        <Cell>
-          {record.id}
-        </Cell>
-        <Cell>
-          {record.attributes}
-        </Cell>
-        <Cell>
-          {record.timestamp}
-        </Cell>
-      </Row>
-    ))}
-  </div>
-)
+  async componentDidMount() {
+    const { table } = this.props
+    const records = await table.fetchRecords()
+    this.setState({ records: records })
+  }
+
+  render() {
+    const { records } = this.state
+
+    return (
+      <Table>
+        <TableHead>
+          <Cell>
+            ID
+          </Cell>
+          <Cell>
+            Attributes
+          </Cell>
+          <Cell>
+            Timestamp
+          </Cell>
+        </TableHead>
+        {records.map(record => (
+          <Row key={record.id}>
+            <Cell>
+              {record.id}
+            </Cell>
+            <Cell>
+              {record.attributes}
+            </Cell>
+            <Cell>
+              {record.timestamp}
+            </Cell>
+          </Row>
+        ))}
+      </Table>
+    )
+  }
+}
 
 export default TableView
