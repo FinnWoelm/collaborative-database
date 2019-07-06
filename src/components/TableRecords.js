@@ -1,22 +1,11 @@
 import React from 'react'
 import { observer } from "mobx-react"
 
-import TableRow from './TableRow'
-import TableCell from './TableCell'
+import TableRecord from './TableRecord'
 
 const TableRecords = observer(({ records }) => (
     records.map(record => (
-      <TableRow key={record.id}>
-        <TableCell>
-          {record.id}
-        </TableCell>
-        <TableCell>
-          {record.attributes}
-        </TableCell>
-        <TableCell>
-          {record.timestamp}
-        </TableCell>
-      </TableRow>
+      <TableRecord key={record.id} record={record} />
     ))
   )
 )

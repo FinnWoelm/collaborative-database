@@ -1,10 +1,7 @@
 import React from 'react';
 import './App.css';
 
-import { types } from "mobx-state-tree"
-
 import Database from './models/Database.js'
-import Table from './models/Table.js'
 import TableView from './components/TableView.js';
 
 const database = Database.create({

@@ -1,5 +1,5 @@
 import sheetrock from 'sheetrock'
-import { types, getParentOfType } from "mobx-state-tree"
+import { types, getParentOfType, destroy } from "mobx-state-tree"
 
 import Record from './Record'
 import Database from './Database'
@@ -21,6 +21,14 @@ const Table = types
 
       return self.records[self.records.length-1]
     },
+    // Return the URL for deleting data
+    deleteURL({ id }) {
+      return getParentOfType(self, Database).writeURL({
+        table: self.name,
+        id: id,
+        attributes: 'delete'
+      })
+    },
     fetchRecords() {
       self.records = []
       self._query('SELECT *').then(
@@ -37,6 +45,10 @@ const Table = types
     fetchRecordsError(error) {
       console.error("Failed to fetch records", error)
       self.state = "error"
+    },
+    // remove a record
+    removeRecord(record) {
+      destroy(record)
     },
     // Return the URL for writing data
     writeURL({ id, attributes }) {
