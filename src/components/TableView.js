@@ -9,7 +9,6 @@ import TableRecords from './TableRecords'
 
 const TableLayout = styled.div`
   display: table;
-  margin: auto;
 `
 
 const TableHead = styled(TableRow)`
