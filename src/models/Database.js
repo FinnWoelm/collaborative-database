@@ -1,13 +1,47 @@
-class Database {
-  #googleID
+import buildUrl from 'build-url'
+import { types } from "mobx-state-tree"
 
-  constructor({ googleID }) {
-    this.#googleID = googleID
-  }
+import Table from './Table'
 
-  get URL() {
-    return `https://docs.google.com/spreadsheets/d/${this.#googleID}`
-  }
-}
+const Database = types
+  .model({
+    sheetID: types.string,
+    formID: types.string,
+    formFields: types.frozen(),
+    tables: types.array(Table)
+  })
+  .views(self => ({
+    get readURL() {
+      return `https://docs.google.com/spreadsheets/d/${self.sheetID}`
+    }
+  }))
+  .actions(self => ({
+    createTable(attributes) {
+      self.tables.push(attributes)
+
+      return self.tables[self.tables.length-1]
+    },
+    // Return the proxied URL for writing data to this table
+    // Because Google forms does not allow CORS, we must proxy the request
+    writeURL({ table, id, attributes }) {
+      const formURL = buildUrl('https://docs.google.com', {
+        path: `forms/d/e/${self.formID}/formResponse`,
+        queryParams: {
+          [self.formFields.table]: table,
+          [self.formFields.id]: id,
+          [self.formFields.attributes]: attributes
+        }
+      })
+
+      const proxiedFormUrl = buildUrl('https://bypasscors.herokuapp.com', {
+        path: 'api',
+        queryParams: {
+          url: formURL
+        }
+      })
+
+      return proxiedFormUrl
+    }
+  }))
 
 export default Database

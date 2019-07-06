@@ -1,28 +1,18 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { observer } from "mobx-react"
 
-const Cell = styled.div`
-  display: inline-block;
-  padding: 8px;
-  display: table-cell;
-  border: 1px solid #d2d2d2;
-  border-top-width: 0px;
+import TableRow from './TableRow'
+import TableCell from './TableCell'
+import TableNewRecordForm from './TableNewRecordForm'
+import TableRecords from './TableRecords'
 
-  &:not(:first-of-type) {
-    border-left-width: 0px;
-  }
-`
-
-const Row = styled.div`
-  display: table-row;
-`
-
-const Table = styled.div`
+const TableLayout = styled.div`
   display: table;
   margin: auto;
 `
 
-const TableHead = styled(Row)`
+const TableHead = styled(TableRow)`
   background: black;
   color: white;
 
@@ -37,50 +27,35 @@ const TableHead = styled(Row)`
   }
 `
 
-class TableView extends Component {
-  constructor() {
-    super();
-    this.state = { records: [] };
-  }
+const TableView = observer(
+  class TableView extends Component {
+    componentDidMount() {
+      this.props.table.fetchRecords()
+    }
 
-  async componentDidMount() {
-    const { table } = this.props
-    const records = await table.fetchRecords()
-    this.setState({ records: records })
-  }
+    render() {
+      const { table } = this.props
+      const { records } = table
 
-  render() {
-    const { records } = this.state
-
-    return (
-      <Table>
-        <TableHead>
-          <Cell>
-            ID
-          </Cell>
-          <Cell>
-            Attributes
-          </Cell>
-          <Cell>
-            Timestamp
-          </Cell>
-        </TableHead>
-        {records.map(record => (
-          <Row key={record.id}>
-            <Cell>
-              {record.id}
-            </Cell>
-            <Cell>
-              {record.attributes}
-            </Cell>
-            <Cell>
-              {record.timestamp}
-            </Cell>
-          </Row>
-        ))}
-      </Table>
-    )
+      return (
+        <TableLayout>
+          <TableHead>
+            <TableCell>
+              ID
+            </TableCell>
+            <TableCell>
+              Attributes
+            </TableCell>
+            <TableCell>
+              Timestamp
+            </TableCell>
+          </TableHead>
+          <TableRecords records={records} />
+          <TableNewRecordForm table={table} />
+        </TableLayout>
+      )
+    }
   }
-}
+)
 
 export default TableView

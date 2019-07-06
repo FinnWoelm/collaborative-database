@@ -1,16 +1,24 @@
 import React from 'react';
 import './App.css';
 
+import { types } from "mobx-state-tree"
+
 import Database from './models/Database.js'
 import Table from './models/Table.js'
 import TableView from './components/TableView.js';
 
-const database = new Database({
-  googleID: '1sLhgLZfHKkCcZ3SbVy-LIh_o1rQg3k62enEAND0hD9Q'
+const database = Database.create({
+  sheetID: '1sLhgLZfHKkCcZ3SbVy-LIh_o1rQg3k62enEAND0hD9Q',
+  formID: '1FAIpQLSequGB-EJV9NK7aaxNC88LpBuggHm02uSfX3VsYp_wzuj3AkA',
+  formFields: {
+    table: 'entry.1190729126',
+    id: 'entry.149192443',
+    attributes: 'entry.538827119'
+  }
 })
 
-const table = new Table({
-  database: database,
+const table = database.createTable({
+  name: 'plants',
   googleID: '0'
 })
 
