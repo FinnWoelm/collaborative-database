@@ -43,7 +43,6 @@ const TableNewRecordForm = observer(
         <TableRecordForm
           recordDraft={recordDraft}
           columns={columns}
-          editID={true}
           submitLabel='Create'
           onSubmit={this.saveRecord}
           />

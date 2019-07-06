@@ -1,6 +1,7 @@
 import sheetrock from 'sheetrock'
 import { types, getParentOfType, destroy } from "mobx-state-tree"
 
+import generateUUID from '../helpers/generateUUID'
 import Record from './Record'
 import Database from './Database'
 
@@ -60,7 +61,7 @@ const Table = types
       })
 
       return Record.create({
-        id: '',
+        id: generateUUID(),
         attributes: attributes
       })
     },

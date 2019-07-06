@@ -34,7 +34,6 @@ class TableEditRecordForm extends Component {
       <TableRecordForm
         recordDraft={recordDraft}
         columns={columns}
-        editID={false}
         submitLabel='Update'
         onSubmit={this.updateRecord}
         onCancel={this.resetRecord}

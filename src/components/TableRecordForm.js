@@ -32,20 +32,13 @@ const TableRecordForm = observer(
 
     render() {
       const { recordDraft, columns,
-              editID, submitLabel, onSubmit, onCancel } = this.props
+              submitLabel, onSubmit, onCancel } = this.props
       const { id, attributes } = recordDraft
 
       return (
         <TableRow as="form" onSubmit={onSubmit}>
           <TableCell>
-          {
-            editID ? (
-              <input name='id' value={id} onChange={this.setRecordID} />
-            ) : (
-              <span>{id}</span>
-            )
-          }
-
+            <input name='id' value={id} onChange={this.setRecordID} disabled={true}/>
           </TableCell>
           {columns.map(column => (
             <TableCell key={column}>

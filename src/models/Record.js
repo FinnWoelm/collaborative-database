@@ -4,7 +4,7 @@ import Table from './Table'
 
 const Record = types
   .model({
-    id: types.string,
+    id: types.frozen(types.string),
     attributes: types.frozen(),
     timestamp: types.maybeNull(types.string)
   })
