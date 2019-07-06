@@ -6,6 +6,7 @@ const Record = types
   .model({
     id: types.string,
     attributes: types.frozen(),
+    attributesInDatabase: types.frozen(),
     timestamp: types.maybeNull(types.string)
   })
   .views(self => ({
@@ -36,10 +37,14 @@ const Record = types
 
       return true
     },
+    // Persist record with current attributes
     persist() {
       // TODO: Needs error handling!
       fetch(self.writeURL, { method: 'post' })
         .then(response => alert('Record saved'));
+
+      self.timestamp = null
+      self.attributesInDatabase = self.attributes
 
       return true
     },
@@ -48,9 +53,20 @@ const Record = types
       console.log(attributes)
 
       self.attributes = attributes
-      self.timestamp = null
       self.persist()
-    }
+    },
+    // reset attributes to those in database
+    reset() {
+      self.attributes = self.attributesInDatabase
+    },
+    // Set ID
+    setID(id) {
+      self.id = id
+    },
+    // Set attribute
+    setAttribute(name, value) {
+      self.attributes = Object.assign({}, self.attributes, { [name]: value })
+    },
   }))
 
 export default Record

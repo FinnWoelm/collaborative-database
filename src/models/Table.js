@@ -17,6 +17,10 @@ const Table = types
     }
   }))
   .actions(self => ({
+    // adds a record
+    addRecord(record) {
+      self.records.push(record)
+    },
     createRecord(attributes) {
       self.records.push(attributes)
 
@@ -46,6 +50,19 @@ const Table = types
     fetchRecordsError(error) {
       console.error("Failed to fetch records", error)
       self.state = "error"
+    },
+    // instantiate a new record (but do not persist)
+    newRecord() {
+      let attributes = {}
+
+      self.columns.forEach(column => {
+        attributes[column] = ''
+      })
+
+      return Record.create({
+        id: '',
+        attributes: attributes
+      })
     },
     // remove a record
     removeRecord(record) {
@@ -80,6 +97,7 @@ const Table = types
                 Record.create({
                   id: row.cellsArray[0],
                   attributes: JSON.parse(row.cellsArray[1]),
+                  attributesInDatabase: JSON.parse(row.cellsArray[1]),
                   timestamp: row.cellsArray[2],
                 })
               ))

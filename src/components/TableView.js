@@ -44,7 +44,7 @@ const TableView = observer(
               ID
             </TableCell>
             {columns.map(column => (
-              <TableCell>
+              <TableCell key={column}>
                 {column}
               </TableCell>
             ))}

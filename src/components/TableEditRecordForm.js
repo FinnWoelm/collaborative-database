@@ -8,32 +8,39 @@ class TableEditRecordForm extends Component {
   constructor(props) {
     super(props)
 
-    const { attributes } = props.record
-
-    this.state = attributes
+    this.state = { record: props.record }
   }
 
-  handleChange = ({ target }) => {
+  setRecordAttribute = ({ target }) => {
     const { name, value } = target
+    const { record } = this.props
 
-    this.setState({
-      [name]: value
-    });
+    record.setAttribute(name, value)
+  }
+
+  resetRecord = event => {
+    event.preventDefault()
+
+    const { record, afterEditRecord } = this.props
+
+    record.reset()
+
+    afterEditRecord()
   }
 
   updateRecord = event => {
     event.preventDefault()
 
-    const { record } = this.props
+    const { record, afterEditRecord } = this.props
 
-    record.update(this.state)
+    record.persist()
 
-    this.props.afterUpdateRecord()
+    afterEditRecord()
   }
 
   render() {
-    const { columns } = this.props
-    const { id } = this.props.record
+    const { columns, record } = this.props
+    const { id, attributes } = record
 
     return (
       <TableRow as="form" onSubmit={this.updateRecord}>
@@ -41,8 +48,8 @@ class TableEditRecordForm extends Component {
           {id}
         </TableCell>
         {columns.map(column => (
-          <TableCell>
-            <input name={column} value={this.state[column]} onChange={this.handleChange} />
+          <TableCell key={column}>
+            <input name={column} value={attributes[column]} onChange={this.setRecordAttribute} />
           </TableCell>
         ))}
         <TableCell>
@@ -50,6 +57,9 @@ class TableEditRecordForm extends Component {
         </TableCell>
         <BorderlessTableCell>
           <button type='submit'>Update</button>
+        </BorderlessTableCell>
+        <BorderlessTableCell>
+          <button onClick={this.resetRecord}>Cancel</button>
         </BorderlessTableCell>
       </TableRow>
     )

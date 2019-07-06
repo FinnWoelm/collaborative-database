@@ -30,7 +30,10 @@ const TableRecord = observer(
       const { id, attributes, timestamp } = record
 
       if(this.editMode())
-        return <TableEditRecordForm record={record} columns={columns} afterUpdateRecord={this.exitEditMode} />
+        return <TableEditRecordForm
+                  record={record}
+                  columns={columns}
+                  afterEditRecord={this.exitEditMode} />
 
       return (
         <TableRow>
@@ -38,7 +41,7 @@ const TableRecord = observer(
             {id}
           </TableCell>
           {columns.map(column => (
-            <TableCell>
+            <TableCell key={column}>
               {attributes[column]}
             </TableCell>
           ))}

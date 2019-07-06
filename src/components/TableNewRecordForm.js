@@ -1,85 +1,82 @@
 import React, { Component } from 'react'
+import { observer } from "mobx-react"
 
 import BorderlessTableCell from './BorderlessTableCell'
 import TableRow from './TableRow'
 import TableCell from './TableCell'
 
-class TableNewRecordForm extends Component {
-  constructor(props) {
-    super(props);
+const TableNewRecordForm = observer(
+  class TableNewRecordForm extends Component {
+    constructor(props) {
+      super(props)
 
-    let attributes = {}
+      this.state = { record: props.table.newRecord() }
+    }
 
-    props.table.columns.forEach(column => {
-      attributes[column] = ''
-    })
+    setRecordID = ({ target }) => {
+      const { record } = this.state
 
-    this.state = { id: '', ...attributes };
-  }
+      record.setID(target.value)
+    }
 
-  handleChange = ({ target }) => {
-    const { name, value } = target
+    setRecordAttribute = ({ target }) => {
+      const { name, value } = target
+      const { record } = this.state
 
-    this.setState({
-      [name]: value
-    });
-  }
+      record.setAttribute(name, value)
+    }
 
-  saveRecord = event => {
-    event.preventDefault()
+    saveRecord = event => {
+      event.preventDefault()
 
-    const { table } = this.props
-    const { id, ...attributes } = this.state
+      const { table } = this.props
+      const { record } = this.state
 
-    if(!id)
-      return
+      console.log('hello')
 
-    const record = table.createRecord({
-      id: id,
-      attributes: attributes
-    })
+      if(!record.id)
+        return
 
-    record.persist()
+      table.addRecord(record)
 
-    this.clearForm()
-  }
+      record.persist()
 
-  clearForm() {
-    let attributes = {}
+      this.clearForm()
+    }
 
-    this.props.table.columns.forEach(column => {
-      attributes[column] = ''
-    })
+    clearForm() {
+      const { table } = this.props
 
-    this.setState({
-      id: '',
-      ...attributes
-    })
-  }
+      this.setState({
+        record: table.newRecord()
+      })
+    }
 
-  render() {
-    const { id } = this.state
-    const { columns } = this.props.table
+    render() {
+      const { record } = this.state
+      const { id, attributes } = record
+      const { columns } = this.props.table
 
-    return (
-      <TableRow as="form" onSubmit={this.saveRecord}>
-        <TableCell>
-          <input name='id' value={id} onChange={this.handleChange} />
-        </TableCell>
-        {columns.map(column => (
+      return (
+        <TableRow as="form" onSubmit={this.saveRecord}>
           <TableCell>
-            <input name={column} value={this.state[column]} onChange={this.handleChange} />
+            <input name='id' value={id} onChange={this.setRecordID} />
           </TableCell>
-        ))}
-        <TableCell>
-          &mdash;
-        </TableCell>
-        <BorderlessTableCell>
-          <button type='submit'>Submit</button>
-        </BorderlessTableCell>
-      </TableRow>
-    )
+          {columns.map(column => (
+            <TableCell key={column}>
+              <input name={column} value={attributes[column]} onChange={this.setRecordAttribute} />
+            </TableCell>
+          ))}
+          <TableCell>
+            &mdash;
+          </TableCell>
+          <BorderlessTableCell>
+            <button type='submit'>Submit</button>
+          </BorderlessTableCell>
+        </TableRow>
+      )
+    }
   }
-}
+)
 
 export default TableNewRecordForm
