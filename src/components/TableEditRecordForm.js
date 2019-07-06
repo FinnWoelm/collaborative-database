@@ -10,7 +10,7 @@ class TableEditRecordForm extends Component {
 
     const { attributes } = props.record
 
-    this.state = { attributes: attributes }
+    this.state = attributes
   }
 
   handleChange = ({ target }) => {
@@ -25,28 +25,26 @@ class TableEditRecordForm extends Component {
     event.preventDefault()
 
     const { record } = this.props
-    const { attributes } = this.state
 
-    if(!attributes)
-      return
-
-    record.update(attributes)
+    record.update(this.state)
 
     this.props.afterUpdateRecord()
   }
 
   render() {
+    const { columns } = this.props
     const { id } = this.props.record
-    const { attributes } = this.state
 
     return (
       <TableRow as="form" onSubmit={this.updateRecord}>
         <TableCell>
           {id}
         </TableCell>
-        <TableCell>
-          <input name='attributes' value={attributes} onChange={this.handleChange} />
-        </TableCell>
+        {columns.map(column => (
+          <TableCell>
+            <input name={column} value={this.state[column]} onChange={this.handleChange} />
+          </TableCell>
+        ))}
         <TableCell>
           &mdash;
         </TableCell>

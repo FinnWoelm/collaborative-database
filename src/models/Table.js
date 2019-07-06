@@ -8,7 +8,8 @@ const Table = types
   .model({
     name: types.string,
     googleID: types.string,
-    records: types.array(Record)
+    records: types.array(Record),
+    columns: types.array(types.string)
   })
   .views(self => ({
     get readURL() {
@@ -51,11 +52,11 @@ const Table = types
       destroy(record)
     },
     // Return the URL for writing data
-    writeURL({ id, attributes }) {
+    writeURL({ id, attributeString }) {
       return getParentOfType(self, Database).writeURL({
         table: self.name,
         id: id,
-        attributes: attributes
+        attributes: attributeString
       })
     },
     // Run a query against the records in this table
@@ -78,7 +79,7 @@ const Table = types
               const records = rows.map(row => (
                 Record.create({
                   id: row.cellsArray[0],
-                  attributes: row.cellsArray[1],
+                  attributes: JSON.parse(row.cellsArray[1]),
                   timestamp: row.cellsArray[2],
                 })
               ))

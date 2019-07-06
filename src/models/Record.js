@@ -5,17 +5,24 @@ import Table from './Table'
 const Record = types
   .model({
     id: types.string,
-    attributes: types.string,
+    attributes: types.frozen(),
     timestamp: types.maybeNull(types.string)
   })
   .views(self => ({
     // Return the URL for deleting the record from the table
     get deleteURL() {
-      return getParentOfType(self, Table).deleteURL(getSnapshot(self))
+      return getParentOfType(self, Table).deleteURL(self)
     },
     // Return the URL for writing the record to the table
     get writeURL() {
-      return getParentOfType(self, Table).writeURL(getSnapshot(self))
+      console.log(getSnapshot(self))
+
+      return getParentOfType(self, Table).writeURL(self)
+    },
+    // JSON-string of attributes for writing to database
+    get attributeString() {
+      console.log(JSON.stringify(self.attributes))
+      return JSON.stringify(self.attributes)
     }
   }))
   .actions(self => ({
@@ -38,6 +45,8 @@ const Record = types
     },
     // Assigns attributes & persists record
     update(attributes) {
+      console.log(attributes)
+
       self.attributes = attributes
       self.timestamp = null
       self.persist()

@@ -26,20 +26,22 @@ const TableRecord = observer(
     }
 
     render() {
-      const { record } = this.props
+      const { record, columns } = this.props
       const { id, attributes, timestamp } = record
 
       if(this.editMode())
-        return <TableEditRecordForm record={record} afterUpdateRecord={this.exitEditMode} />
+        return <TableEditRecordForm record={record} columns={columns} afterUpdateRecord={this.exitEditMode} />
 
       return (
         <TableRow>
           <TableCell>
             {id}
           </TableCell>
-          <TableCell>
-            {attributes}
-          </TableCell>
+          {columns.map(column => (
+            <TableCell>
+              {attributes[column]}
+            </TableCell>
+          ))}
           <TableCell>
             {timestamp}
           </TableCell>

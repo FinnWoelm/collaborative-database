@@ -16,7 +16,8 @@ const database = Database.create({
 
 const table = database.createTable({
   name: 'plants',
-  googleID: '0'
+  googleID: '0',
+  columns: ['label', 'description']
 })
 
 function App() {

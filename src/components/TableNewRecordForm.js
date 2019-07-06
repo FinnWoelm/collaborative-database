@@ -7,7 +7,14 @@ import TableCell from './TableCell'
 class TableNewRecordForm extends Component {
   constructor(props) {
     super(props);
-    this.state = { id: '', attributes: '' };
+
+    let attributes = {}
+
+    props.table.columns.forEach(column => {
+      attributes[column] = ''
+    })
+
+    this.state = { id: '', ...attributes };
   }
 
   handleChange = ({ target }) => {
@@ -22,9 +29,9 @@ class TableNewRecordForm extends Component {
     event.preventDefault()
 
     const { table } = this.props
-    const { id, attributes } = this.state
+    const { id, ...attributes } = this.state
 
-    if(!(id && attributes))
+    if(!id)
       return
 
     const record = table.createRecord({
@@ -38,23 +45,32 @@ class TableNewRecordForm extends Component {
   }
 
   clearForm() {
+    let attributes = {}
+
+    this.props.table.columns.forEach(column => {
+      attributes[column] = ''
+    })
+
     this.setState({
       id: '',
-      attributes: ''
+      ...attributes
     })
   }
 
   render() {
-    const { id, attributes } = this.state
+    const { id } = this.state
+    const { columns } = this.props.table
 
     return (
       <TableRow as="form" onSubmit={this.saveRecord}>
         <TableCell>
           <input name='id' value={id} onChange={this.handleChange} />
         </TableCell>
-        <TableCell>
-          <input name='attributes' value={attributes} onChange={this.handleChange} />
-        </TableCell>
+        {columns.map(column => (
+          <TableCell>
+            <input name={column} value={this.state[column]} onChange={this.handleChange} />
+          </TableCell>
+        ))}
         <TableCell>
           &mdash;
         </TableCell>

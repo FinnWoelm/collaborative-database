@@ -35,7 +35,7 @@ const TableView = observer(
 
     render() {
       const { table } = this.props
-      const { records } = table
+      const { records, columns } = table
 
       return (
         <TableLayout>
@@ -43,14 +43,16 @@ const TableView = observer(
             <TableCell>
               ID
             </TableCell>
-            <TableCell>
-              Attributes
-            </TableCell>
+            {columns.map(column => (
+              <TableCell>
+                {column}
+              </TableCell>
+            ))}
             <TableCell>
               Timestamp
             </TableCell>
           </TableHead>
-          <TableRecords records={records} />
+          <TableRecords records={records} columns={columns} />
           <TableNewRecordForm table={table} />
         </TableLayout>
       )
