@@ -1,67 +1,44 @@
 import React, { Component } from 'react'
 
-import BorderlessTableCell from './BorderlessTableCell'
-import TableRow from './TableRow'
-import TableCell from './TableCell'
+import TableRecordForm from './TableRecordForm'
 
 class TableEditRecordForm extends Component {
   constructor(props) {
     super(props)
 
-    this.state = { record: props.record }
-  }
-
-  setRecordAttribute = ({ target }) => {
-    const { name, value } = target
-    const { record } = this.props
-
-    record.setAttribute(name, value)
+    this.state = { recordDraft: props.record.copy() }
   }
 
   resetRecord = event => {
     event.preventDefault()
 
-    const { record, afterEditRecord } = this.props
-
-    record.reset()
-
-    afterEditRecord()
+    this.props.afterEditRecord()
   }
 
   updateRecord = event => {
     event.preventDefault()
 
+    const { recordDraft } = this.state
     const { record, afterEditRecord } = this.props
 
-    record.persist()
+    record.update(recordDraft.attributes)
 
     afterEditRecord()
   }
 
   render() {
-    const { columns, record } = this.props
-    const { id, attributes } = record
+    const { columns } = this.props
+    const { recordDraft } = this.state
 
     return (
-      <TableRow as="form" onSubmit={this.updateRecord}>
-        <TableCell>
-          {id}
-        </TableCell>
-        {columns.map(column => (
-          <TableCell key={column}>
-            <input name={column} value={attributes[column]} onChange={this.setRecordAttribute} />
-          </TableCell>
-        ))}
-        <TableCell>
-          &mdash;
-        </TableCell>
-        <BorderlessTableCell>
-          <button type='submit'>Update</button>
-        </BorderlessTableCell>
-        <BorderlessTableCell>
-          <button onClick={this.resetRecord}>Cancel</button>
-        </BorderlessTableCell>
-      </TableRow>
+      <TableRecordForm
+        recordDraft={recordDraft}
+        columns={columns}
+        editID={false}
+        submitLabel='Update'
+        onSubmit={this.updateRecord}
+        onCancel={this.resetRecord}
+        />
     )
   }
 }

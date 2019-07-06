@@ -6,7 +6,6 @@ const Record = types
   .model({
     id: types.string,
     attributes: types.frozen(),
-    attributesInDatabase: types.frozen(),
     timestamp: types.maybeNull(types.string)
   })
   .views(self => ({
@@ -27,7 +26,11 @@ const Record = types
     }
   }))
   .actions(self => ({
-    // Deletes the record
+    // Return a copy of the record
+    copy() {
+      return Record.create(getSnapshot(self))
+    },
+    // Delete the record
     destroy() {
       // TODO: Needs error handling!
       fetch(self.deleteURL, { method: 'post' })
@@ -44,7 +47,6 @@ const Record = types
         .then(response => alert('Record saved'));
 
       self.timestamp = null
-      self.attributesInDatabase = self.attributes
 
       return true
     },
@@ -54,10 +56,6 @@ const Record = types
 
       self.attributes = attributes
       self.persist()
-    },
-    // reset attributes to those in database
-    reset() {
-      self.attributes = self.attributesInDatabase
     },
     // Set ID
     setID(id) {

@@ -53,7 +53,7 @@ const TableView = observer(
             </TableCell>
           </TableHead>
           <TableRecords records={records} columns={columns} />
-          <TableNewRecordForm table={table} />
+          <TableNewRecordForm table={table} columns={columns} />
         </TableLayout>
       )
     }

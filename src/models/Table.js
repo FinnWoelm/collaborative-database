@@ -97,7 +97,6 @@ const Table = types
                 Record.create({
                   id: row.cellsArray[0],
                   attributes: JSON.parse(row.cellsArray[1]),
-                  attributesInDatabase: JSON.parse(row.cellsArray[1]),
                   timestamp: row.cellsArray[2],
                 })
               ))
