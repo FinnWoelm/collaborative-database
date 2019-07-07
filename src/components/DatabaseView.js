@@ -5,17 +5,19 @@ import TableView from './TableView.js';
 
 class DatabaseView extends Component {
   render() {
-    const { database, match } = this.props
+    const { database, match, ...otherProps } = this.props
 
     // Remove trailing slash
     // See: https://github.com/ReactTraining/react-router/issues/4841#issuecomment-507400321
     const matchURL = match.url.replace(/\/+$/, '')
 
+    const tables = database.tables.filter(table => table.name !== 'suggestions')
+
     return (
       <Fragment>
         <strong>Tables</strong>
         <ul>
-          {database.tables.map(table => (
+          {tables.map(table => (
             <li key={table.name}>
               <Link to={`${matchURL}/${table.name}`}>
                 {table.name}
@@ -24,13 +26,21 @@ class DatabaseView extends Component {
           ))}
         </ul>
         <hr />
-        {database.tables.map(table => (
-          <Route exact path={`${matchURL}/${table.name}`} render={() => <TableView table={table} />} />
+        {tables.map(table => (
+          <Route
+            key={table.name}
+            exact
+            path={`${matchURL}/${table.name}`}
+            render={() => (
+              <TableView
+                table={table}
+                {...otherProps} />
+          )} />
         ))}
         <Route
           exact
           path={match.url}
-          render={() => <Redirect to={`${matchURL}/${database.tables[0].name}`} />} />
+          render={() => <Redirect to={`${matchURL}/${tables[0].name}`} />} />
 
       </Fragment>
     )

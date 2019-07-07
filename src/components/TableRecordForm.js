@@ -42,7 +42,14 @@ const TableRecordForm = observer(
           </TableCell>
           {columns.map(column => (
             <TableCell key={column}>
-              <input name={column} value={attributes[column]} onChange={this.setRecordAttribute} />
+              <input
+                name={column}
+                // Avoid: "A component is changing an uncontrolled input of type
+                // undefined to be controlled. Input elements should not switch
+                // from uncontrolled to controlled (or vice versa).
+                // See: https://stackoverflow.com/a/50722189/6451879
+                value={attributes[column] === undefined ? '' : attributes[column]}
+                onChange={this.setRecordAttribute} />
             </TableCell>
           ))}
           <TableCell>

@@ -18,6 +18,12 @@ const setupDatabase = (config) => {
     columns: ['plant1', 'plant2', 'likes', 'note']
   })
 
+  database.createTable({
+    name: 'suggestions',
+    googleID: '2121427503',
+    columns: ['table', 'id', 'changes']
+  })
+
   return database
 }
 

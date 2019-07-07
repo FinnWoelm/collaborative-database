@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 
 import DatabaseView from './DatabaseView'
 import setupDatabase from '../helpers/setupDatabase'
@@ -14,12 +14,45 @@ const getAdminConfig = (adminKey) => {
   }
 }
 
-const AdminView = props => (
-  <DatabaseView
-    database={setupDatabase(getAdminConfig(props.match.params.key))}
-    isAdmin={true}
-    adminKey={props.match.params.key}
-    {...props} />
-)
+class AdminView extends Component {
+  onCreateRecord = ({ table, recordDraft }) => {
+    table.addRecord(recordDraft)
+
+    recordDraft.persist()
+
+    return true
+  }
+
+  onUpdateRecord = ({ record, recordDraft }) => {
+    record.update(recordDraft.attributes)
+
+    return true
+  }
+
+  onDestroyRecord = ({ record }) => {
+    record.destroy()
+
+    return true
+  }
+
+  render() {
+    const adminKey = this.props.match.params.key
+
+    return (
+      <DatabaseView
+        database={setupDatabase(getAdminConfig(adminKey))}
+        isAdmin={true}
+        adminKey={adminKey}
+        createLabel='Create'
+        onCreateRecord={this.onCreateRecord}
+        editLabel='Edit'
+        updateLabel='Update'
+        onUpdateRecord={this.onUpdateRecord}
+        destroyLabel='Delete'
+        onDestroyRecord={this.onDestroyRecord}
+        {...this.props} />
+    )
+  }
+}
 
 export default AdminView

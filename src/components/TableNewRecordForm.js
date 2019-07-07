@@ -14,17 +14,13 @@ const TableNewRecordForm = observer(
     saveRecord = event => {
       event.preventDefault()
 
-      const { table } = this.props
+      const { table, onCreateRecord } = this.props
       const { recordDraft } = this.state
 
-      if(!recordDraft.id)
-        return
+      let success = onCreateRecord({ table, recordDraft })
 
-      table.addRecord(recordDraft)
-
-      recordDraft.persist()
-
-      this.clearForm()
+      if(success)
+        this.clearForm()
     }
 
     clearForm() {
@@ -36,14 +32,14 @@ const TableNewRecordForm = observer(
     }
 
     render() {
-      const { columns } = this.props
+      const { columns, createLabel } = this.props
       const { recordDraft } = this.state
 
       return (
         <TableRecordForm
           recordDraft={recordDraft}
           columns={columns}
-          submitLabel='Create'
+          submitLabel={createLabel}
           onSubmit={this.saveRecord}
           />
       )

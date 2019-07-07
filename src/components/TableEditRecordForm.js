@@ -19,22 +19,23 @@ class TableEditRecordForm extends Component {
     event.preventDefault()
 
     const { recordDraft } = this.state
-    const { record, afterEditRecord } = this.props
+    const { record, onUpdateRecord, afterUpdateRecord } = this.props
 
-    record.update(recordDraft.attributes)
+    let success = onUpdateRecord({ record, recordDraft })
 
-    afterEditRecord()
+    if(success)
+      afterUpdateRecord()
   }
 
   render() {
-    const { columns } = this.props
+    const { columns, updateLabel } = this.props
     const { recordDraft } = this.state
 
     return (
       <TableRecordForm
         recordDraft={recordDraft}
         columns={columns}
-        submitLabel='Update'
+        submitLabel={updateLabel}
         onSubmit={this.updateRecord}
         onCancel={this.resetRecord}
         />

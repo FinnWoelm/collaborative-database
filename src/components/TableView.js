@@ -33,7 +33,9 @@ const TableView = observer(
     }
 
     render() {
-      const { table } = this.props
+      const { table,
+              onCreateRecord, onUpdateRecord, onDestroyRecord,
+              createLabel, editLabel, updateLabel, destroyLabel } = this.props
       const { records, columns } = table
 
       return (
@@ -51,8 +53,19 @@ const TableView = observer(
               Timestamp
             </TableCell>
           </TableHead>
-          <TableRecords records={records} columns={columns} />
-          <TableNewRecordForm table={table} columns={columns} />
+          <TableRecords
+            records={records}
+            columns={columns}
+            editLabel={editLabel}
+            updateLabel={updateLabel}
+            onUpdateRecord={onUpdateRecord}
+            onDestroyRecord={onDestroyRecord}
+            destroyLabel={destroyLabel} />
+          <TableNewRecordForm
+            table={table}
+            columns={columns}
+            createLabel={createLabel}
+            onCreateRecord={onCreateRecord} />
         </TableLayout>
       )
     }

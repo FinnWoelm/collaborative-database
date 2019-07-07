@@ -21,19 +21,29 @@ const TableRecord = observer(
       this.setState({ editMode: false })
     }
 
+    destroyRecord = () => {
+      const { record, onDestroyRecord } = this.props
+
+      onDestroyRecord(record)
+    }
+
     editMode() {
       return this.state.editMode
     }
 
     render() {
-      const { record, columns } = this.props
+      const { record, columns,
+              onUpdateRecord,
+              editLabel, updateLabel, destroyLabel} = this.props
       const { id, attributes, timestamp } = record
 
       if(this.editMode())
         return <TableEditRecordForm
                   record={record}
                   columns={columns}
-                  afterEditRecord={this.exitEditMode} />
+                  updateLabel={updateLabel}
+                  onUpdateRecord={onUpdateRecord}
+                  afterUpdateRecord={this.exitEditMode} />
 
       return (
         <TableRow>
@@ -49,10 +59,14 @@ const TableRecord = observer(
             {timestamp}
           </TableCell>
           <BorderlessTableCell>
-            <button onClick={this.enterEditMode}>Edit</button>
+            <button onClick={this.enterEditMode}>
+              {editLabel}
+            </button>
           </BorderlessTableCell>
           <BorderlessTableCell>
-            <button onClick={record.destroy}>Delete</button>
+            <button onClick={this.destroyRecord}>
+              {destroyLabel}
+            </button>
           </BorderlessTableCell>
         </TableRow>
       )
