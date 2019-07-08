@@ -24,20 +24,18 @@ const Database = types
     // Return the proxied URL for writing data to this table
     // Because Google forms does not allow CORS, we must proxy the request
     writeURL({ table, id, attributes }) {
-      const formURL = buildUrl('https://docs.google.com', {
-        path: `forms/d/e/${self.formID}/formResponse`,
+      const formURL = buildUrl('https://script.google.com/', {
+        path: `macros/s/AKfycbypjmWHNvoID5K5tyodKMzbagGSA3UzHPArgvtJrcpx-LsmVaw/exec`,
         queryParams: {
           [self.formFields.table]: table,
           [self.formFields.id]: id,
-          [self.formFields.attributes]: attributes
+          [self.formFields.attributes]: attributes,
+          'adminKey': self.formID
         }
       })
 
-      const proxiedFormUrl = buildUrl('https://bypasscors.herokuapp.com', {
-        path: 'api',
-        queryParams: {
-          url: formURL
-        }
+      const proxiedFormUrl = buildUrl('https://cors-anywhere.herokuapp.com/', {
+        path: formURL
       })
 
       return proxiedFormUrl

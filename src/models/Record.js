@@ -47,7 +47,10 @@ const Record = types
     persist() {
       // TODO: Needs error handling!
       fetch(self.writeURL, { method: 'post' })
-        .then(response => alert('Saved'));
+        .then(response => {
+          alert('Saved')
+          response.text().then(data => console.log(data))
+        })
 
       self.timestamp = null
 

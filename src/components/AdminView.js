@@ -9,9 +9,9 @@ const getAdminConfig = (adminKey) => {
   return {
     formID: adminKey,
     formFields: {
-      table: 'entry.1190729126',
-      id: 'entry.149192443',
-      attributes: 'entry.538827119'
+      table: 'Table',
+      id: 'ID',
+      attributes: 'Attributes'
     }
   }
 }

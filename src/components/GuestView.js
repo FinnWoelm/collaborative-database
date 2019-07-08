@@ -4,11 +4,11 @@ import DatabaseView from './DatabaseView'
 import setupDatabase from '../helpers/setupDatabase'
 
 const guestConfig = {
-  formID: '1FAIpQLSdJKkW3lTD-jJimmJOWBSMZdHBJCVrzugnWMhgzpfyx1vBS0w',
+  formID: '',
   formFields: {
-    table: 'entry.1190729126',
-    id: 'entry.149192443',
-    attributes: 'entry.538827119'
+    table: 'Table',
+    id: 'ID',
+    attributes: 'Attributes'
   }
 }
 
