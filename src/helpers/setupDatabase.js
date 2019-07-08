@@ -21,7 +21,7 @@ const setupDatabase = (config) => {
   database.createTable({
     name: 'suggestions',
     googleID: '2121427503',
-    columns: ['table', 'id', 'changes']
+    columns: ['table', 'id', 'changes', 'accepted']
   })
 
   return database

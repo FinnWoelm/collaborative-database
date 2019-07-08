@@ -11,13 +11,16 @@ const Record = types
   .views(self => ({
     // Return the URL for deleting the record from the table
     get deleteURL() {
-      return getParentOfType(self, Table).deleteURL(self)
+      return self.table.deleteURL(self)
+    },
+    get table() {
+      return getParentOfType(self, Table)
     },
     // Return the URL for writing the record to the table
     get writeURL() {
       console.log(getSnapshot(self))
 
-      return getParentOfType(self, Table).writeURL(self)
+      return self.table.writeURL(self)
     },
     // JSON-string of attributes for writing to database
     get attributeString() {
@@ -36,7 +39,7 @@ const Record = types
       fetch(self.deleteURL, { method: 'post' })
         .then(response => alert('Record deleted'));
 
-      getParentOfType(self, Table).removeRecord(self)
+      self.table.removeRecord(self)
 
       return true
     },
@@ -44,7 +47,7 @@ const Record = types
     persist() {
       // TODO: Needs error handling!
       fetch(self.writeURL, { method: 'post' })
-        .then(response => alert('Record saved'));
+        .then(response => alert('Saved'));
 
       self.timestamp = null
 
@@ -54,7 +57,7 @@ const Record = types
     update(attributes) {
       console.log(attributes)
 
-      self.attributes = attributes
+      self.attributes = Object.assign({}, self.attributes, attributes)
       self.persist()
     },
     // Set ID

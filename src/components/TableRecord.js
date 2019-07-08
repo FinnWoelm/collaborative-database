@@ -24,7 +24,7 @@ const TableRecord = observer(
     destroyRecord = () => {
       const { record, onDestroyRecord } = this.props
 
-      onDestroyRecord(record)
+      onDestroyRecord({ ...{ record } })
     }
 
     editMode() {

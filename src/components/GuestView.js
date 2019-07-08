@@ -13,20 +13,54 @@ const guestConfig = {
 }
 
 class GuestView extends Component {
+  constructor(props) {
+    super(props)
+
+    this.state = { database: setupDatabase(guestConfig) }
+  }
+
+  suggestionTable() {
+    return this.state.database.tables.find(table => table.name === 'suggestions')
+  }
+
   onCreateRecord = ({ table, recordDraft }) => {
-    alert('suggest creation: not yet implemented')
+    const suggestion = this.suggestionTable().newRecord()
+
+    this.suggestionTable().addRecord(suggestion)
+
+    suggestion.update({
+      table: table.name,
+      id: recordDraft.id,
+      changes: recordDraft.attributes
+    })
 
     return true
   }
 
   onUpdateRecord = ({ record, recordDraft }) => {
-    alert('suggest update: not yet implemented')
+    const suggestion = this.suggestionTable().newRecord()
+
+    this.suggestionTable().addRecord(suggestion)
+
+    suggestion.update({
+      table: record.table.name,
+      id: record.id,
+      changes: recordDraft.attributes
+    })
 
     return true
   }
 
   onDestroyRecord = ({ record }) => {
-    alert('suggest deletion: not yet implemented')
+    const suggestion = this.suggestionTable().newRecord()
+
+    this.suggestionTable().addRecord(suggestion)
+
+    suggestion.update({
+      table: record.table.name,
+      id: record.id,
+      changes: 'delete'
+    })
 
     return true
   }
@@ -34,7 +68,7 @@ class GuestView extends Component {
   render() {
     return (
       <DatabaseView
-         database={setupDatabase(guestConfig)}
+         database={this.state.database}
          createLabel='Suggest Creation'
          onCreateRecord={this.onCreateRecord}
          editLabel='Suggest Edit'
