@@ -21,8 +21,7 @@ const Database = types
 
       return self.tables[self.tables.length-1]
     },
-    // Return the proxied URL for writing data to this table
-    // Because Google forms does not allow CORS, we must proxy the request
+    // Return the URL for writing data to this table
     writeURL({ table, id, attributes }) {
       const formURL = buildUrl('https://script.google.com/', {
         path: `macros/s/AKfycbypjmWHNvoID5K5tyodKMzbagGSA3UzHPArgvtJrcpx-LsmVaw/exec`,
@@ -34,11 +33,7 @@ const Database = types
         }
       })
 
-      const proxiedFormUrl = buildUrl('https://cors-anywhere.herokuapp.com/', {
-        path: formURL
-      })
-
-      return proxiedFormUrl
+      return formURL
     }
   }))
 
