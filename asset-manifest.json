@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/collaborative-database/static/css/main.5cfe31d7.chunk.css",
-    "main.js": "/collaborative-database/static/js/main.9a75ee10.chunk.js",
-    "main.js.map": "/collaborative-database/static/js/main.9a75ee10.chunk.js.map",
+    "main.js": "/collaborative-database/static/js/main.f397027c.chunk.js",
+    "main.js.map": "/collaborative-database/static/js/main.f397027c.chunk.js.map",
     "runtime~main.js": "/collaborative-database/static/js/runtime~main.84246f76.js",
     "runtime~main.js.map": "/collaborative-database/static/js/runtime~main.84246f76.js.map",
-    "static/js/2.c0c378c4.chunk.js": "/collaborative-database/static/js/2.c0c378c4.chunk.js",
-    "static/js/2.c0c378c4.chunk.js.map": "/collaborative-database/static/js/2.c0c378c4.chunk.js.map",
+    "static/js/2.1ca29d4f.chunk.js": "/collaborative-database/static/js/2.1ca29d4f.chunk.js",
+    "static/js/2.1ca29d4f.chunk.js.map": "/collaborative-database/static/js/2.1ca29d4f.chunk.js.map",
     "index.html": "/collaborative-database/index.html",
-    "precache-manifest.fa7dd6aad75d12e922d0933a9c9abc64.js": "/collaborative-database/precache-manifest.fa7dd6aad75d12e922d0933a9c9abc64.js",
+    "precache-manifest.024147b0b16ad4a454b877197826b625.js": "/collaborative-database/precache-manifest.024147b0b16ad4a454b877197826b625.js",
     "service-worker.js": "/collaborative-database/service-worker.js",
     "static/css/main.5cfe31d7.chunk.css.map": "/collaborative-database/static/css/main.5cfe31d7.chunk.css.map"
   }
